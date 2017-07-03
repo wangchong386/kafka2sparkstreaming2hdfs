@@ -1,10 +1,42 @@
 package dh.bigdata.etl.util;
 
+import com.dhgate.event.DHEvent;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PigConv {
+
+	public static String getSite(DHEvent event) throws Exception {
+		String site = null;
+		if (event.getTags().get("site") != null && !"".equals(event.getTags().get("site").toString())) {
+			site = event.getTags().get("site").toString();
+		} else {
+			String siteTmp = getSitebyUrl(event.getU());
+			if (siteTmp == null || "".equals(siteTmp)) {
+				site = "www";
+			} else {
+				site = siteTmp;
+			}
+		}
+		return site;
+	}
+
+	public static String getLang(DHEvent event) throws Exception {
+		String lang = null;
+		if (event.getTags().get("lang") != null && !"".equals(event.getTags().get("lang").toString())) {
+			lang = event.getTags().get("lang").toString();
+		} else {
+			String langTmp = getLangbyUrl(event.getU());
+			if (langTmp == null || "".equals(langTmp)) {
+				lang = "en";
+			} else {
+				lang = langTmp;
+			}
+		}
+		return lang;
+	}
 
 	public static String getSitebyUrl(String currentUrl) throws IOException {
 		if (currentUrl == null) {
