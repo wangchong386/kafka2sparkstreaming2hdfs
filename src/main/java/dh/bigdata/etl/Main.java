@@ -110,6 +110,75 @@ public class Main {
         odsLogClickEventRowRdd.foreachRDD(new InsertOdsLogClickEvent(broadcastHC));
         odsLogClickEventKafkaRdd.foreachRDD(new UpdateOffset());
 
+        /* Search_S0002 -> tmp_ods_log_subject_expo -> ods_log_subject_expo
+        * 1. 获取topic ods_log_subject_expo kafka的streaming
+        * 2. 将kafka中的数据转换为DHEvent
+        * 3. 将event对应转换成tmp_ods_log_subject_expo中的记录
+        * 4. 将便宜提交到zookeeper
+        */
+
+        topic = "ods_log_subject_expo";
+        JavaInputDStream<MessageAndMetadata<String, byte[]>> odsLogSubjectExpoKafkaRdd = KafkaDirecStreamFactory.get(jssc,topic);
+        JavaDStream<DHEvent> odsLogSubjectExpoEventRdd = odsLogSubjectExpoKafkaRdd.map(new Message2DHEvent());
+        JavaDStream<Row> odsLogSubjectExpoRowRdd = odsLogSubjectExpoEventRdd.map(new Event2OdsLogSubjectExpo());
+        odsLogSubjectExpoRowRdd.foreachRDD(new InsertOdsLogSubjectExpo(broadcastHC));
+        odsLogSubjectExpoKafkaRdd.foreachRDD(new UpdateOffset());
+
+       /* App_U0001 ->  tmp_ods_log_app -> ods_log_app
+        * 1. 获取topic ods_log_app kafka的streaming
+        * 2. 将kafka中的数据转换为DHEvent
+        * 3. 将event对应转换成tmp_ods_log_app中的记录
+        * 4. 将便宜提交到zookeeper
+        */
+        topic = "ods_log_app";
+        JavaInputDStream<MessageAndMetadata<String, byte[]>> odsLogAppKafkaRdd = KafkaDirecStreamFactory.get(jssc,topic);
+        JavaDStream<DHEvent> odsLogAppEventRdd = odsLogAppKafkaRdd.map(new Message2DHEvent());
+        JavaDStream<Row> odsLogAppRowRdd = odsLogAppEventRdd.map(new Event2OdsLogApp());
+        odsLogAppRowRdd.foreachRDD(new InsertOdsLogApp(broadcastHC));
+        odsLogAppKafkaRdd.foreachRDD(new UpdateOffset());
+
+
+         /* APP_D0001 ->  tmp_ods_log_app_device -> ods_log_app_device
+        * 1. 获取topic ods_log_app_device kafka的streaming
+        * 2. 将kafka中的数据转换为DHEvent
+        * 3. 将event对应转换成tmp_ods_log_app_device中的记录
+        * 4. 将便宜提交到zookeeper
+        */
+        topic = "ods_log_app_device";
+        JavaInputDStream<MessageAndMetadata<String, byte[]>> odsLogAppDeviceKafkaRdd = KafkaDirecStreamFactory.get(jssc,topic);
+        JavaDStream<DHEvent> odsLogAppDeviceEventRdd = odsLogAppDeviceKafkaRdd.map(new Message2DHEvent());
+        JavaDStream<Row> odsLogAppDeviceRowRdd = odsLogAppDeviceEventRdd.map(new Event2OdsLogAppDevice());
+        odsLogAppDeviceRowRdd.foreachRDD(new InsertOdsLogAppDevice(broadcastHC));
+        odsLogAppDeviceKafkaRdd.foreachRDD(new UpdateOffset());
+
+         /* APP_E0001 ->  tmp_ods_log_app_events -> ods_log_app_events
+        * 1. 获取topic ods_log_app_events kafka的streaming
+        * 2. 将kafka中的数据转换为DHEvent
+        * 3. 将event对应转换成tmp_ods_log_app_events中的记录
+        * 4. 将便宜提交到zookeeper
+        */
+        topic = "ods_log_app_events";
+        JavaInputDStream<MessageAndMetadata<String, byte[]>> odsLogAppEventsKafkaRdd = KafkaDirecStreamFactory.get(jssc,topic);
+        JavaDStream<DHEvent> odsLogAppEventsEventRdd = odsLogAppEventsKafkaRdd.map(new Message2DHEvent());
+        JavaDStream<Row> odsLogAppEventsRowRdd = odsLogAppEventsEventRdd.map(new Event2OdsLogAppEvents());
+        odsLogAppEventsRowRdd.foreachRDD(new InsertOdsLogAppEvents(broadcastHC));
+        odsLogAppEventsKafkaRdd.foreachRDD(new UpdateOffset());
+
+        /* APP_E0002 ->  tmp_ods_log_app_events_ios -> ods_log_app_events_ios
+        * 1. 获取topic ods_log_app_events_ios kafka的streaming
+        * 2. 将kafka中的数据转换为DHEvent
+        * 3. 将event对应转换成tmp_ods_log_app_events_ios中的记录
+        * 4. 将便宜提交到zookeeper
+        */
+
+        topic = "ods_log_app_events_ios";
+        JavaInputDStream<MessageAndMetadata<String, byte[]>> odsLogAppEventsIosKafkaRdd = KafkaDirecStreamFactory.get(jssc,topic);
+        JavaDStream<DHEvent> odsLogAppEventsIosEventRdd = odsLogAppEventsIosKafkaRdd.map(new Message2DHEvent());
+        JavaDStream<Row> odsLogAppEventsIosRowRdd = odsLogAppEventsIosEventRdd.map(new Event2OdsLogAppEventsIos());
+        odsLogAppEventsIosRowRdd.foreachRDD(new InsertOdsLogAppEventsIos(broadcastHC));
+        odsLogAppEventsIosKafkaRdd.foreachRDD(new UpdateOffset());
+
+
         jssc.start();
         jssc.awaitTermination();
         jssc.close();

@@ -206,4 +206,5 @@ public class PigConv {
 		System.out.println(getUuid("3%7Cff808081463705700146478613b15c07:108:r14132asdg196", "http://m.dhgate.com/mobileApiWeb/cart-Cart-addToCart.do", "111"));
 		System.out.println(getUuid("3%7Cff808081463705700146478613b15c07:108:r14132asdg196", "http://m.dhgate.com/mobileApiWeb/cart-Cart-addToCart.do#3%7Cff808081463705700146478613b15c07:108:r1413242196", ""));
 	}
+
 }
