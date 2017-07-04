@@ -16,7 +16,9 @@ public class Event2OdsLogProdExpo implements Function<DHEvent, Row> {
      */
     @Override
     public Row call(DHEvent event) throws Exception {
-
+        String Schkw = null;
+        Schkw = (event.getTags().get("schkw") == null) ? "" : event.getTags().get("schkw").toString();
+        String search_keywords_md5 = ""; // PigConv.SchkwMD5(event.getSchkw());
         return RowFactory.create(event.getName(),
                 event.getId(),
                 event.getVid(),
@@ -52,7 +54,7 @@ public class Event2OdsLogProdExpo implements Function<DHEvent, Row> {
                 PigConv.getLang(event),
                 (event.getTags().get("ordlang") == null) ? "" : event.getTags().get("ordlang").toString(),
                 (event.getTags().get("operation_system") == null) ? "" : event.getTags().get("operation_system").toString(),
-                //(event.getTags().get("schkw") == null) ? "" : event.getTags().get("search_keywords_md5").toString(),
+                (event.getTags().get("schkw") == null) ? "" : event.getTags().get("schkw").toString(),
                 (event.getTags().get("psum") == null) ? "" : event.getTags().get("psum").toString(),
                 (event.getTags().get("feedback") == null) ? "" : event.getTags().get("feedback").toString(),
                 (event.getTags().get("qs") == null) ? "" : event.getTags().get("qs").toString(),

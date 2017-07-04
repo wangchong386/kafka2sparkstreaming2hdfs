@@ -32,7 +32,7 @@ public class Event2OdsLogPageView implements Function<DHEvent, Row> {
                 event.getAid(),
                 event.getU(),
                 event.getCou(),
-                //      (event.getTags().get("uuid") == null) ? "" : event.getTags().get("uuid").toString(),
+                (event.getTags().get("uuid") == null) ? "" : event.getTags().get("uuid").toString(),
                 (event.getTags().get("pt") == null) ? "" : event.getTags().get("pt").toString(),
                 (event.getTags().get("lpid") == null) ? "" : event.getTags().get("lpid").toString(),
                 (event.getTags().get("activity") == null) ? "" : event.getTags().get("activity").toString(),
@@ -59,6 +59,7 @@ public class Event2OdsLogPageView implements Function<DHEvent, Row> {
                 (event.getTags().get("pagedur") == null) ? "" : event.getTags().get("pagedur").toString(),
                 (event.getTags().get("session") == null) ? "" : event.getTags().get("session").toString(),
                 (event.getTags().get("subpt") == null) ? "" : event.getTags().get("subpt").toString(),
-                event.getTags().get("currentDate").toString());
+                event.getTags().get("currentDate").toString(),
+                event.getName());
     }
 }

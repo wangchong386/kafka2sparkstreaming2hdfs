@@ -42,6 +42,7 @@ public class Event2OdsLogClickEvent implements Function<DHEvent, Row> {
                 (event.getTags().get("deviceid") == null) ? "" : event.getTags().get("deviceid").toString(),
                 (event.getTags().get("activityid") == null) ? "" : event.getTags().get("activityid").toString(),
                 //(tags#'loc' is not null and tags#'loc' matches '[0-9]*{7,12}' ? tags#'loc' : tags#'itemcode') as item_code,
+                (event.getTags().get("loc") == null) ? "" :event.getTags().get("item_code").toString(),
                 (event.getTags().get("lastvisittime") == null) ? "" : event.getTags().get("lastvt").toString(),
                 (event.getTags().get("pvn") == null) ? "" : event.getTags().get("pvn").toString(),
                 (event.getTags().get("vnum") == null) ? "" : event.getTags().get("vnum").toString(),

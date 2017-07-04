@@ -72,6 +72,7 @@ public class InsertOdsLogPageView implements Function2<JavaRDD<Row>, Time, Void>
             structFields.add(DataTypes.createStructField("session", DataTypes.StringType, true));
             structFields.add(DataTypes.createStructField("subpt", DataTypes.StringType, true));
             structFields.add(DataTypes.createStructField("currentDate", DataTypes.StringType, true));
+            structFields.add(DataTypes.createStructField("pname", DataTypes.StringType, true));
             StructType structType = DataTypes.createStructType(structFields);
 
             HiveContext hiveContext = broadcastHC.value();
@@ -80,7 +81,7 @@ public class InsertOdsLogPageView implements Function2<JavaRDD<Row>, Time, Void>
 
             hiveContext.sql("set hive.exec.dynamic.partition=true");
             hiveContext.sql("set hive.exec.dynamic.partition.mode=nonstrict");
-            hiveContext.sql("INSERT INTO sparkstreaming.tmp_ods_log_pageview PARTITION (dt) select * from tmp_ods_log_pageview");
+            hiveContext.sql("INSERT INTO sparkstreaming.tmp_ods_log_pageview PARTITION (dt,event) select * from tmp_ods_log_pageview");
         }
         return null;
     }
