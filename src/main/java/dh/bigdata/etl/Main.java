@@ -2,6 +2,8 @@ package dh.bigdata.etl;
 
 import com.dhgate.event.DHEvent;
 import dh.bigdata.etl.sparkstreaming.*;
+import dh.bigdata.etl.util.ConfUtil;
+import dh.bigdata.etl.util.Contant;
 import dh.bigdata.etl.util.KafkaManager;
 import kafka.common.TopicAndPartition;
 import kafka.message.MessageAndMetadata;
@@ -30,9 +32,11 @@ public class Main {
     public static volatile Broadcast<HiveContext> broadcastHC = null;
 
     public static void main(String[] args) {
+        ConfUtil confUtil = ConfUtil.getInstance();
+
         SparkConf sparkConf = new SparkConf().setAppName("etl_dh_data").setMaster("yarn-client");
-        sparkConf.set("spark.streaming.kafka.maxRatePerPartition", "10");
-        JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, Durations.seconds(60));
+        sparkConf.set("spark.streaming.kafka.maxRatePerPartition", confUtil.getProperty(Contant.MAX_RATE_PERPARTITION));
+        JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, Durations.seconds(Integer.parseInt(confUtil.getProperty(Contant.WINDOWS_DURATION))));
         //jssc.checkpoint("");
 
         HiveContext hiveContext = new HiveContext(jssc.sparkContext().sc());
